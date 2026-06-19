@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechBoard — Tech Job Aggregator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<header class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <nav class="nav">
+    <a href="#" class="logo">
+      <div class="logo-mark"><span class="logo-code">&lt;/&gt;</span></div>
+      <span class="logo-name">Tech<span>Board</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#jobsGrid">Browse Jobs</a></li>
+      <li><a href="#pastSection">Archived</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero-body">
+    <div class="hero-pill">✦ Tech Jobs Aggregated Daily</div>
+
+    <h1 class="hero-title">
+      Find Your Next<br>
+      <span class="grad">Tech Role</span>
+    </h1>
+    <p class="hero-sub">
+      Curated engineering, data, cloud &amp; consulting opportunities from top company Workday portals — all in one place.
+    </p>
+
+    <div class="search-bar">
+      <input id="searchInput" type="text" placeholder="Search role, skill, company, or keyword…" />
+      <div class="divider"></div>
+      <button onclick="applyFilters()">Search</button>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat">
+        <span class="stat-val" id="sJobs">—</span>
+        <span class="stat-lbl">Open Roles</span>
+      </div>
+      <div class="stats-sep"></div>
+      <div class="stat">
+        <span class="stat-val" id="sCompanies">—</span>
+        <span class="stat-lbl">Companies</span>
+      </div>
+      <div class="stats-sep"></div>
+      <div class="stat">
+        <span class="stat-val" id="sLocations">—</span>
+        <span class="stat-lbl">Cities</span>
+      </div>
+    </div>
+
+    <div class="chips" id="chipsContainer"></div>
+  </div>
+</header>
+
+<!-- ── FILTER + JOBS WRAPPER ── -->
+<div class="main-wrapper">
+
+  <!-- Sticky filter bar -->
+  <div class="filter-bar">
+    <div class="filter-inner">
+      <span class="filter-lbl">Filter</span>
+
+      <select class="filter-sel" id="fCompany" onchange="applyFilters()">
+        <option value="">All Companies</option>
+      </select>
+
+      <select class="filter-sel" id="fDept" onchange="applyFilters()">
+        <option value="">All Departments</option>
+      </select>
+
+      <select class="filter-sel" id="fLocation" onchange="applyFilters()">
+        <option value="">All Locations</option>
+      </select>
+
+      <select class="filter-sel" id="fType" onchange="applyFilters()">
+        <option value="">All Types</option>
+      </select>
+
+      <button class="clear-btn" onclick="clearAll()">Clear</button>
+      <span class="result-count" id="resultCount"></span>
+    </div>
+  </div>
+
+  <!-- Active jobs -->
+  <main class="jobs-section">
+    <div class="section-head">
+      <div>
+        <h2>Open Positions</h2>
+        <p>Sourced daily from company portals · tech-filtered by AI</p>
+      </div>
+    </div>
+
+    <div class="jobs-grid" id="jobsGrid">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading jobs…</p>
+      </div>
+    </div>
+    <div class="pagination" id="pagination"></div>
+  </main>
+
+  <!-- Archived / past jobs -->
+  <section class="past-section" id="pastSection" style="display:none">
+    <div class="past-header" onclick="togglePast()">
+      <div>
+        <h2>Archived Postings</h2>
+        <p id="pastSubtitle">Expired roles — links may not be active</p>
+      </div>
+      <button class="past-toggle-btn" id="pastToggleBtn">Show ▾</button>
+    </div>
+    <div id="pastBody" style="display:none">
+      <div class="jobs-grid past-grid" id="pastGrid"></div>
+      <div class="pagination" id="paginationPast"></div>
+    </div>
+  </section>
+
+</div><!-- /.main-wrapper -->
+
+<!-- ── FOOTER ── -->
+<footer>
+  <strong>TechBoard</strong> &nbsp;·&nbsp; Aggregating tech roles from Workday portals &nbsp;·&nbsp; AI-filtered, updated daily
+</footer>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>

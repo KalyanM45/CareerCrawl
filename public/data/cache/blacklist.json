@@ -1,0 +1,230 @@
+{
+  "1970324837392806": {
+    "title": "Senior Financial Analyst",
+    "company": "Ascendion",
+    "reason": "Financial analysis, budgeting, forecasting, variance analysis",
+    "blacklisted_at": "2026-06-19T17:03:35.840991+00:00"
+  },
+  "1970324837386018": {
+    "title": "Manager - Administration & Facilities",
+    "company": "Ascendion",
+    "reason": "non-technical role, focuses on administration and facilities management",
+    "blacklisted_at": "2026-06-19T17:03:39.056209+00:00"
+  },
+  "1970324837394462": {
+    "title": "Sr Associate Corporate TA",
+    "company": "Ascendion",
+    "reason": "NA",
+    "blacklisted_at": "2026-06-19T17:03:53.338220+00:00"
+  },
+  "1970324837394473": {
+    "title": "BI Engineer",
+    "company": "Ascendion",
+    "reason": "MicroStrategy development and reporting, no coding skills required",
+    "blacklisted_at": "2026-06-19T17:04:19.410876+00:00"
+  },
+  "1970324837381919": {
+    "title": "Business Analyst",
+    "company": "Ascendion",
+    "reason": "Requirements elicitation and Business Requirements Document ( BRD ) writing, User story creation with acceptance criteria (Jira/Azure DevOps)",
+    "blacklisted_at": "2026-06-19T17:04:34.617065+00:00"
+  },
+  "1970324837381920": {
+    "title": "Business Analyst",
+    "company": "Ascendion",
+    "reason": "Requirements elicitation and Business Requirements Document ( BRD ) writing, User story creation with acceptance criteria (Jira/Azure DevOps)",
+    "blacklisted_at": "2026-06-19T17:04:34.617138+00:00"
+  },
+  "1970324837277163": {
+    "title": "Senior Executive -Alliance Operations",
+    "company": "Ascendion",
+    "reason": "no technical skills mentioned",
+    "blacklisted_at": "2026-06-19T17:05:06.029791+00:00"
+  },
+  "1970324837347557": {
+    "title": "Consultant",
+    "company": "Ascendion",
+    "reason": "no technical skills mentioned",
+    "blacklisted_at": "2026-06-19T17:05:06.029948+00:00"
+  },
+  "1970324837273478": {
+    "title": "Project Manager",
+    "company": "Ascendion",
+    "reason": "customer-facing role, no technical skills required",
+    "blacklisted_at": "2026-06-19T17:05:36.307667+00:00"
+  },
+  "1970324837273487": {
+    "title": "Project Manager",
+    "company": "Ascendion",
+    "reason": "customer-facing role, no technical skills required",
+    "blacklisted_at": "2026-06-19T17:05:36.308099+00:00"
+  },
+  "1970324837278445": {
+    "title": "Senior Execitive FP&A",
+    "company": "Ascendion",
+    "reason": "financial planning and analysis, no technical skills required",
+    "blacklisted_at": "2026-06-19T17:05:36.308468+00:00"
+  },
+  "1970324837370237": {
+    "title": "Manager - Business Finanace",
+    "company": "Ascendion",
+    "reason": "uses Power BI, Excel, SQL, Python for finance process automation, but the job is finance",
+    "blacklisted_at": "2026-06-19T17:06:08.778829+00:00"
+  },
+  "1970324837335337": {
+    "title": "Executive -FP&A",
+    "company": "Ascendion",
+    "reason": "uses Excel, SQL for financial analysis, but the job is finance",
+    "blacklisted_at": "2026-06-19T17:06:08.779097+00:00"
+  },
+  "1970324837397805": {
+    "title": "Scrum Master",
+    "company": "Ascendion",
+    "reason": "uses Jira, but the job is Scrum Master and Business Analysis",
+    "blacklisted_at": "2026-06-19T17:06:08.779433+00:00"
+  },
+  "1970324837398361": {
+    "title": "NexGen Hiring Drive 2.0 - AI Product Owner - Customer Success Engineer - Bangalore",
+    "company": "Ascendion",
+    "reason": "acts as a trusted advisor to customers, helping users integrate AI into their day-to-day workflows",
+    "blacklisted_at": "2026-06-19T17:06:39.329077+00:00"
+  },
+  "1970324837397654": {
+    "title": "NexGen Hiring Drive 2.0 Technical Business Analyst - Customer Success - Bangalore",
+    "company": "Ascendion",
+    "reason": "Technical Business Analyst - Customer Success for AI-powered platform",
+    "blacklisted_at": "2026-06-19T17:07:00.744263+00:00"
+  },
+  "1970324837277165": {
+    "title": "Manager - Partner Alliance",
+    "company": "Ascendion",
+    "reason": "no technical skills mentioned",
+    "blacklisted_at": "2026-06-19T17:07:33.472111+00:00"
+  },
+  "1970324837392692": {
+    "title": "Senior Business Analyst (Guidewire - Policy Center)",
+    "company": "Ascendion",
+    "reason": "no technical skills mentioned",
+    "blacklisted_at": "2026-06-19T17:07:33.472512+00:00"
+  },
+  "1970324837391495": {
+    "title": "Senior Executive Talent Acquisition",
+    "company": "Ascendion",
+    "reason": "no technical skills required, focuses on talent acquisition",
+    "blacklisted_at": "2026-06-19T17:08:05.878395+00:00"
+  },
+  "1970324837399040": {
+    "title": "Design Manager",
+    "company": "Ascendion",
+    "reason": "Design Manager",
+    "blacklisted_at": "2026-06-19T17:08:28.053602+00:00"
+  },
+  "1970324837411016": {
+    "title": "Program Director",
+    "company": "Ascendion",
+    "reason": "Program Director",
+    "blacklisted_at": "2026-06-19T17:08:28.053761+00:00"
+  },
+  "1970324837389619": {
+    "title": "Data/ETL Engineer",
+    "company": "Ascendion",
+    "reason": "validates FHIR-based APIs and workflows for compliance with FHIR R4 and implementation guides, does not require coding skills",
+    "blacklisted_at": "2026-06-19T17:10:00.512927+00:00"
+  },
+  "1970324837389334": {
+    "title": "Senior Executive Talent Acquisition",
+    "company": "Ascendion",
+    "reason": "manages the end-to-end lifecycle of all Talent Acquisition vendors, does not require technical skills",
+    "blacklisted_at": "2026-06-19T17:10:00.513096+00:00"
+  },
+  "1970324837397014": {
+    "title": "Senior associate pricing",
+    "company": "Ascendion",
+    "reason": "uses AI-powered software engineering, but job description is not tech-focused",
+    "blacklisted_at": "2026-06-19T17:10:32.847935+00:00"
+  },
+  "1970324837395571": {
+    "title": "Product Owner/ Product Manager",
+    "company": "Ascendion",
+    "reason": "Product management role, no coding required",
+    "blacklisted_at": "2026-06-19T17:11:04.068924+00:00"
+  },
+  "1970324837387904": {
+    "title": "Senior Executive - Revenue Recognition",
+    "company": "Ascendion",
+    "reason": "accounting and financial role, no coding",
+    "blacklisted_at": "2026-06-19T17:11:33.700217+00:00"
+  },
+  "1970324837279724": {
+    "title": "Executive Finance & Accounts",
+    "company": "Ascendion",
+    "reason": "uses Excel and timesheet workflow in a system, no coding",
+    "blacklisted_at": "2026-06-19T17:12:01.255090+00:00"
+  },
+  "1970324837357365": {
+    "title": "Associate Talent Specialist ",
+    "company": "Ascendion",
+    "reason": "recruits candidates, uses MS Office, no coding",
+    "blacklisted_at": "2026-06-19T17:12:01.255265+00:00"
+  },
+  "1970324837398733": {
+    "title": "Global Procurement Manager",
+    "company": "Ascendion",
+    "reason": "manages procurement, uses AI-powered software engineering, no coding",
+    "blacklisted_at": "2026-06-19T17:12:01.255528+00:00"
+  },
+  "1970324837396986": {
+    "title": "Executive Assistant",
+    "company": "Ascendion",
+    "reason": "Executive Assistant role, no tech skills required",
+    "blacklisted_at": "2026-06-19T17:12:26.583343+00:00"
+  },
+  "1970324837415623": {
+    "title": ".NET Backend Engineer",
+    "company": "Ascendion",
+    "reason": "leads complex testing programs, understands client landscapes, and develops test strategies, but does not require expertise in data engineering or software development",
+    "blacklisted_at": "2026-06-19T17:12:58.093116+00:00"
+  },
+  "1970324837421131": {
+    "title": "Service Delivery Manager",
+    "company": "Ascendion",
+    "reason": "Uses ITIL best practices, monitoring tools, and automation, but no coding required",
+    "blacklisted_at": "2026-06-19T17:14:01.541326+00:00"
+  },
+  "1970324837397337": {
+    "title": "Payroll",
+    "company": "Ascendion",
+    "reason": "Payroll",
+    "blacklisted_at": "2026-06-19T17:15:02.454966+00:00"
+  },
+  "1970324837397345": {
+    "title": "Program Manager - Global Marketing",
+    "company": "Ascendion",
+    "reason": "non-tech role, program management",
+    "blacklisted_at": "2026-06-19T17:15:34.112509+00:00"
+  },
+  "1970324837398702": {
+    "title": "Manager AP",
+    "company": "Ascendion",
+    "reason": "non-tech role, management",
+    "blacklisted_at": "2026-06-19T17:15:34.112881+00:00"
+  },
+  "1970324837394351": {
+    "title": "Senior associate Legal & Compliance",
+    "company": "Ascendion",
+    "reason": "draft, review, and negotiate commercial contracts (MSAs, SaaS, software licenses)",
+    "blacklisted_at": "2026-06-19T17:16:00.699835+00:00"
+  },
+  "1970324837398694": {
+    "title": "Associate",
+    "company": "Ascendion",
+    "reason": "no technical skills mentioned",
+    "blacklisted_at": "2026-06-19T17:16:32.920542+00:00"
+  },
+  "1970324837397394": {
+    "title": "Delivery Excellence -AI Process Champion ",
+    "company": "Ascendion",
+    "reason": "no technical skills mentioned",
+    "blacklisted_at": "2026-06-19T17:16:32.921274+00:00"
+  }
+}
