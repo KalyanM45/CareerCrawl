@@ -27,14 +27,11 @@ from ..utils.utils import (
     strip_html,
     BROWSER_HEADERS, POST_HEADERS, GET_HEADERS,
     CACHE_DIR, BATCH_SIZE, JD_WORKERS, JD_DELAY, PAGE_DELAY, MAX_RETRIES,
-    GROQ_API_KEY, GROQ_MODEL,
     _is_obviously_non_tech, run_llm_enrichment,
     load_blacklist, load_cache, save_cache,
 )
-
-from langchain_groq import ChatGroq
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import JsonOutputParser
+from ..utils.llm import call_llm
+from ..prompts.dept_classify import DEPT_SYSTEM_PROMPT
 
 FACET_CACHE_PATH = os.path.join(CACHE_DIR, 'facets_cache.json')
 
@@ -71,82 +68,16 @@ def _save_facet_cache(cache: dict) -> None:
         json.dump(cache, f, ensure_ascii=False, indent=2)
 
 
-# ── Department LLM classifier (Workday-specific) ──────────────────────
-
-_DEPT_SYSTEM_PROMPT = """\
-You are an expert job market analyst. Your job is to classify company department \
-names from a Workday career portal and decide whether each one is TECHNOLOGY or \
-DATA related.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CLASSIFY AS TECH (is_tech = true) IF the department primarily involves:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-• Software / application development, engineering, architecture
-• Data work of any kind: analytics, data science, data engineering,
-  business intelligence, reporting, visualization, ETL, modeling,
-  statistical analysis, quantitative research
-• Information Technology (IT): systems administration, infrastructure,
-  cloud computing, DevOps, SRE, networking, databases, cybersecurity
-• Digital products or digital transformation
-• Machine learning, AI, NLP, computer vision
-• Product management (typically for tech products)
-• UX / UI design and research
-• Technical program / project management
-• Computational research, bioinformatics, cheminformatics
-• Data strategy, technology strategy, innovation labs
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CLASSIFY AS NOT TECH (is_tech = false) IF the department is primarily:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-• Finance, Accounting, Treasury, FP&A
-• Legal, Compliance, Regulatory Affairs, Intellectual Property
-• Human Resources, Talent Acquisition, Recruiting, L&D
-• Marketing, Communications, Brand, PR, Advertising
-• Sales, Business Development, Account Management, Revenue
-• Customer Service, Customer Success, Customer Experience
-• Medical Affairs, Clinical Operations, Pharmacovigilance
-• Regulatory Affairs, Drug Safety, Clinical Data Management
-• Scientific Affairs (wet-lab / non-computational science)
-• Manufacturing, Quality, Supply Chain, Logistics, Operations
-• Strategy / Consulting (UNLESS explicitly data or technology strategy)
-• Administrative, Facilities, Real Estate, EHS
-• Procurement, Vendor Management
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-AMBIGUOUS CASES — apply these rules strictly:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-• "Research" alone          → false UNLESS "Quantitative Research", "Computational Research"
-• "Operations" alone        → false UNLESS "Technology Operations", "Data Operations"
-• "Strategy" alone          → false UNLESS "Data Strategy", "Technology Strategy"
-• "Product" alone           → true  (assume tech product management)
-• "Innovation"              → true  (assume tech/digital innovation)
-• Company-specific acronyms → false if meaning is unclear
-• "Rotational Program"      → false
-
-RULES:
-1. Classify EVERY department in the input — never skip one.
-2. Use the EXACT department name from the input — no rewording.
-3. When in doubt, classify as TRUE — job-level LLM pass will filter non-tech postings.
-4. Provide a brief, specific reason for each decision.
-
-Respond ONLY with valid JSON — no extra text:
-{{"classifications": [{{"name": "<exact dept name>", "is_tech": true, "reason": "<one sentence>"}}]}}
-"""
-
 def _llm_classify_depts(names: list[str]) -> list[dict]:
-    if not GROQ_API_KEY:
-        raise RuntimeError("GROQ_API_KEY not set")
-
     numbered = "\n".join(f"{i+1}. {n}" for i, n in enumerate(names))
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", _DEPT_SYSTEM_PROMPT),
-        ("human",
-         "Classify each of the following {count} department(s).\n\n"
-         "{departments}\n\nReturn ONLY the JSON object."),
-    ])
-    llm   = ChatGroq(api_key=GROQ_API_KEY, model=GROQ_MODEL, temperature=0)
-    chain = prompt | llm | JsonOutputParser()
-    result = chain.invoke({"count": len(names), "departments": numbered})
+    result = call_llm(
+        system_prompt=DEPT_SYSTEM_PROMPT,
+        human_template=(
+            "Classify each of the following {count} department(s).\n\n"
+            "{departments}\n\nReturn ONLY the JSON object."
+        ),
+        variables={"count": len(names), "departments": numbered},
+    )
     rows   = result.get("classifications", [])
 
     name_set  = set(names)

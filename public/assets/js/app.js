@@ -1,8 +1,8 @@
 // ── Company registry — logos via Clearbit CDN (free, no auth) ────────
 const COMPANY_REGISTRY = {
   // ── Active (local images) ──────────────────────────────────────────
-  'Trinity Life Sciences':  { abbr: 'TL', color: '#1B4FD8', image: 'assets/images/companies/trinity.jpg' },
-  'Jupiter Medical':        { abbr: 'JM', color: '#0891B2', image: 'assets/images/companies/jupitermedicals.jpg' },
+  'Trinity Life Sciences':  { abbr: 'TL', color: '#1B4FD8', image: '../assets/images/companies/trinity.jpg' },
+  'Jupiter Medical':        { abbr: 'JM', color: '#0891B2', image: '../assets/images/companies/jupitermedicals.jpg' },
 
   // ── Technology & Software ──────────────────────────────────────────
   'Workday':                { abbr: 'WD', color: '#F97316', image: 'https://logo.clearbit.com/workday.com' },
@@ -109,7 +109,7 @@ function isExpired(job) { return daysLeft(job) <= 0; }
 // ── Boot ──────────────────────────────────────────────────────────────
 (async () => {
   try {
-    const res = await fetch('data/jobs.json');
+    const res = await fetch('../data/jobs.json');
     if (!res.ok) throw new Error('HTTP ' + res.status);
     allJobs = await res.json();
     setup();
@@ -242,7 +242,7 @@ function clearAll() {
 
 // ── Shared card builder ───────────────────────────────────────────────
 function jobCardHTML(job, i, archived = false) {
-  const info     = companyInfo(job.company);
+  const info     = companyInfo(job);
   const posted   = niceDate(job);
   const dl       = daysLeft(job);
   const cardCls  = archived ? 'job-card past-card' : 'job-card';
@@ -404,10 +404,17 @@ function goPage(p)     { currentPage     = p; renderPage();     }
 function goPagePast(p) { currentPagePast = p; renderPastPage(); }
 
 // ── Helpers ───────────────────────────────────────────────────────────
-function companyInfo(name) {
-  if (COMPANY_REGISTRY[name]) return COMPANY_REGISTRY[name];
-  const hue = [...(name || '')].reduce((a, c) => a + c.charCodeAt(0), 0) % 360;
-  return { abbr: (name || '?').slice(0, 2).toUpperCase(), color: `hsl(${hue},58%,38%)` };
+function companyInfo(job) {
+  const reg  = COMPANY_REGISTRY[job.company] || {};
+  const img  = job.company_image;
+  const hue  = [...(job.company || '')].reduce((a, c) => a + c.charCodeAt(0), 0) % 360;
+  return {
+    abbr:  reg.abbr  || (job.company || '?').slice(0, 2).toUpperCase(),
+    color: reg.color || `hsl(${hue},58%,38%)`,
+    image: img
+      ? (img.startsWith('http') ? img : '../' + img)
+      : (reg.image || null),
+  };
 }
 
 function truncate(str, max) {

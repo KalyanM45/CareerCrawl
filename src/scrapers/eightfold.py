@@ -1,23 +1,7 @@
-"""
-Eightfold.ai platform scraper.
-
-Required company config keys:
-    id, name, image,
-    domain   – e.g. "ascendion.com"
-    base_url – e.g. "https://jobs.ascendion.com"
-    location – search filter, e.g. "India"
-
-List API  : GET {base_url}/api/pcsx/search?domain={domain}&query=&location={location}&start={n}&sort_by=match&filter_include_remote=1
-Detail API: GET {base_url}/api/apply/v2/jobs/{id}?domain={domain}
-Session   : GET {base_url}/careers  (sets _vs/_vscid cookies required by the API)
-
-Called by main.py as:  scrape_company(company_dict) → list[job_dict]
-"""
-
 import time
 import threading
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import requests
 
@@ -29,7 +13,7 @@ from ..utils.utils import (
     load_blacklist, load_cache, save_cache,
 )
 
-PAGE_SIZE = 10   # Eightfold default page size
+PAGE_SIZE = 10
 
 _WORK_MODE_MAP = {
     "remote":       "Remote",
@@ -54,7 +38,6 @@ def _ts_to_iso(ts: int) -> str:
 # ── Session ───────────────────────────────────────────────────────────
 
 def _build_session(base_url: str) -> requests.Session:
-    """Visit /careers to acquire _vs/_vscid session cookies."""
     s = requests.Session()
     s.headers.update(BROWSER_HEADERS)
     try:
@@ -68,18 +51,15 @@ def _build_session(base_url: str) -> requests.Session:
 
 def _fetch_listings(company: dict, session: requests.Session) -> list:
     all_listings = []
-    start    = 0
-    total    = None
-    base_url = company["base_url"]
-    domain   = company["domain"]
-    location = company.get("location", "India")
+    start        = 0
+    total        = None
+    base_url     = company["links"]["base_url"]
+    job_list_url = company["links"]["job_list_url"]
+    name         = company["company"]["name"]
+    image        = company["company"].get("image", "")
 
     while True:
-        url = (
-            f"{base_url}/api/pcsx/search"
-            f"?domain={domain}&query=&location={location}"
-            f"&start={start}&sort_by=match&filter_include_remote=1"
-        )
+        url = f"{job_list_url}{start}&sort_by=match&filter_include_remote=1"
         resp = None
         for attempt in range(1, MAX_RETRIES + 1):
             try:
@@ -116,8 +96,8 @@ def _fetch_listings(company: dict, session: requests.Session) -> list:
             locs   = pos.get("locations") or []
             all_listings.append({
                 "job_id":          job_id,
-                "company":         company["name"],
-                "company_image":   company.get("image", ""),
+                "company":         name,
+                "company_image":   image,
                 "title":           pos.get("name", ""),
                 "location":        ", ".join(locs),
                 "department":      pos.get("department") or "",
@@ -144,13 +124,13 @@ def _fetch_listings(company: dict, session: requests.Session) -> list:
 
 # ── JD fetcher ────────────────────────────────────────────────────────
 
-def _fetch_jd(base_url: str, domain: str, job_id: str, cookies: dict) -> dict:
+def _fetch_jd(job_main_url: str, job_id: str, cookies: dict) -> dict:
     time.sleep(JD_DELAY)
     s = requests.Session()
     s.headers.update(BROWSER_HEADERS)
     s.cookies.update(cookies)
     try:
-        url  = f"{base_url}/api/apply/v2/jobs/{job_id}?domain={domain}"
+        url  = job_main_url.replace("{JOB_ID}", job_id)
         resp = s.get(url, headers=GET_HEADERS, timeout=30)
         resp.raise_for_status()
         d = resp.json()
@@ -167,7 +147,7 @@ def _fetch_jd(base_url: str, domain: str, job_id: str, cookies: dict) -> dict:
 
 def scrape_company(company: dict) -> list:
     cid  = company["id"]
-    name = company["name"]
+    name = company["company"]["name"]
 
     print(f"\n{'=' * 60}")
     print(f"  {name}  [Eightfold]")
@@ -177,7 +157,7 @@ def scrape_company(company: dict) -> list:
     blacklist = load_blacklist()
     print(f"  Cache: {len(cache)} existing jobs | Blacklist: {len(blacklist)} blocked IDs")
 
-    session  = _build_session(company["base_url"])
+    session  = _build_session(company["links"]["base_url"])
     listings = _fetch_listings(company, session)
     live_ids = {j["job_id"] for j in listings}
 
@@ -191,17 +171,16 @@ def scrape_company(company: dict) -> list:
           f"   - {len(removed):>4} removed"
           f"   x {n_blacklisted:>4} blacklisted (skipped)\n")
 
-    # Fetch JDs in parallel
     if new_jobs:
         print(f"  Fetching {len(new_jobs)} new JDs with {JD_WORKERS} workers ...\n")
-        cookies    = dict(session.cookies)
-        print_lock = threading.Lock()
-        done       = [0]
+        cookies      = dict(session.cookies)
+        job_main_url = company["links"]["job_main_url"]
+        print_lock   = threading.Lock()
+        done         = [0]
 
         with ThreadPoolExecutor(max_workers=JD_WORKERS) as pool:
             future_map = {
-                pool.submit(_fetch_jd, company["base_url"], company["domain"],
-                            job["job_id"], cookies): job
+                pool.submit(_fetch_jd, job_main_url, job["job_id"], cookies): job
                 for job in new_jobs
             }
             for future in as_completed(future_map):
@@ -220,16 +199,13 @@ def scrape_company(company: dict) -> list:
                     print(f"    [{done[0]:>3}/{len(new_jobs)}]"
                           f"  {job['job_id']:>20}  {job['title']}")
 
-    # Fill dates from Unix timestamp
     for job in new_jobs:
         iso = _ts_to_iso(job.pop("_posted_ts", 0))
         job["start_date"]  = iso
         job["posted_date"] = iso
 
-    # LLM enrichment
     new_jobs, _ = run_llm_enrichment(new_jobs, blacklist)
 
-    # Update cache
     for jid in removed:
         del cache[jid]
 

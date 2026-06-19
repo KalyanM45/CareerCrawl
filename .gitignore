@@ -9,3 +9,6 @@ wheels/
 # Virtual environments
 .venv
 .env
+
+# Scraper cache — regenerated on each run, not needed in deploy
+public/data/cache/

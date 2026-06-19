@@ -1,28 +1,19 @@
-"""
-Master company list. Every entry MUST include:
-    id      – unique slug used for cache filename
-    name    – display name
-    image   – relative path shown in the UI
-    scraper – which scraper to use:
-                "workday"          → scrapers/workday.py
-                "eightfold"        → scrapers/eightfold.py
-                "custom.<module>"  → scrapers/custom/<module>.py
-
-Each scraper expects its own platform-specific keys alongside those above.
-"""
-
 COMPANIES = [
-
-    # ── Eightfold.ai ──────────────────────────────────────────────────
-    # Keys: domain, base_url, location
     {
-        "id":       "ascendion",
-        "name":     "Ascendion",
-        "image":    "assets/images/companies/ascendion.jpg",
+        "id": "ascendion",
         "scraper":  "eightfold",
-        "domain":   "ascendion.com",
-        "base_url": "https://jobs.ascendion.com",
-        "location": "India",
+        "company": {
+            "name": "Ascendion",
+            "domain": "https://ascendion.com",
+            "image": "assets/images/companies/ascendion.png"
+            },
+        "links": {
+            "base_url": "https://jobs.ascendion.com",
+            "job_list_url": "https://jobs.ascendion.com/api/pcsx/search?domain=ascendion.com&query=&location=India&start=",
+            "job_main_url": "https://jobs.ascendion.com/api/pcsx/position_details?position_id={JOB_ID}&domain=ascendion.com",
+        },
+        "others": {
+        }
     },
 
     # ── Workday ───────────────────────────────────────────────────────

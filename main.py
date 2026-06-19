@@ -13,12 +13,27 @@ Each company's "scraper" key resolves to:
 
 import sys
 import os
+import json
 import importlib
 
 sys.path.insert(0, os.path.dirname(__file__))
 
 from src.config.config import COMPANIES
 from scrapers.utils import save_output
+
+
+def _save_company_meta(companies: list) -> None:
+    data_dir = os.path.join(os.path.dirname(__file__), "public", "data")
+    os.makedirs(data_dir, exist_ok=True)
+    meta = {
+        c["company"]["name"]: c["company"].get("image", "")
+        for c in companies
+        if c.get("company", {}).get("name")
+    }
+    path = os.path.join(data_dir, "companies.json")
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(meta, f, ensure_ascii=False, indent=2)
+    print(f"  Company meta saved → {path}")
 
 
 def _load_scraper(scraper_key: str):
@@ -43,6 +58,7 @@ def _load_scraper(scraper_key: str):
 
 
 if __name__ == "__main__":
+    _save_company_meta(COMPANIES)
     combined: list = []
 
     for company in COMPANIES:
