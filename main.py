@@ -1,16 +1,3 @@
-"""
-Main entry point. Reads COMPANIES from config.py, routes each company
-to its designated scraper, and writes the combined jobs.json + jobs.csv.
-
-Usage:
-    python main.py
-
-Each company's "scraper" key resolves to:
-    "workday"         → scrapers/workday.py   scrape_company()
-    "eightfold"       → scrapers/eightfold.py scrape_company()
-    "custom.<module>" → scrapers/custom/<module>.py  scrape_company()
-"""
-
 import sys
 import os
 import json
@@ -18,7 +5,7 @@ import importlib
 
 sys.path.insert(0, os.path.dirname(__file__))
 
-from src.config.config import COMPANIES
+from backend.config.config import COMPANIES
 from scrapers.utils import save_output
 
 
